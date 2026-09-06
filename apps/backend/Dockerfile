@@ -39,4 +39,4 @@ WORKDIR /app/apps/backend
 RUN npx prisma generate
 
 EXPOSE 3000
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/index.js"]
+CMD ["sh", "-c", "if npx prisma migrate deploy; then echo 'Migrations up to date'; else echo 'Deploy failed, trying to baseline 0_init...' && npx prisma migrate resolve --applied 0_init && npx prisma migrate deploy; fi && exec node dist/index.js"]
