@@ -18,17 +18,17 @@ services:
     image: ghcr.io/edoardosarri24/regalamelo-backend:main
     restart: always
     environment:
-      - DATABASE_URL=postgresql://giftlistuser:miaPasswordSicura@db:5432/giftlistdb
-      - PORT=3000
-      - CORS_ORIGIN=https://regalamelo.edoardosarri.com
-      - FRONTEND_URL=https://regalamelo.edoardosarri.com
-      - JWT_SECRET=DquWtjmyokZOHxXCr6HGYiu/N6k3P+6Z
-      - SMTP_HOST=smtp.resend.com
-      - SMTP_PORT=465
-      - SMTP_SECURE=true
-      - SMTP_USER=resend
-      - SMTP_PASS=re_btxL4CKn_DdNCCucWMUtYvknTXTCMocH4
-      - EMAIL_FROM=Regalamelo <noreply@regalamelo.edoardosarri.com>
+      - DATABASE_URL=${DATABASE_URL}
+      - PORT=${PORT}
+      - CORS_ORIGIN=${CORS_ORIGIN}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_SECURE=${SMTP_SECURE}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - EMAIL_FROM=${EMAIL_FROM}
     depends_on:
       - db
     logging:
@@ -43,12 +43,12 @@ services:
     volumes:
       - NAS_DATABASE_DATA:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=giftlistdb
-      - POSTGRES_USER=giftlistuser
-      - POSTGRES_PASSWORD=miaPasswordSicura
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - PGDATA=/var/lib/postgresql/data/pg
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U giftlistuser -d giftlistdb"]
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -63,7 +63,7 @@ services:
     restart: always
     command: tunnel run
     environment:
-      - TUNNEL_TOKEN=eyJhIjoiNjAxZGFlNDk1ODM0NzUyMjU4NjYwMzMwMWFiZGFlOTMiLCJ0IjoiYWFkZjcwOTQtN2Y0OS00YThjLTllZWItYjFjMDYxZTdkY2I5IiwicyI6IllXTXdabUl5TWpJdFltWXhaQzAwWmpNNExXRTJZbVl0WVRsbE4yTTVORFV5Tm1RMCJ9
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
     depends_on:
       - frontend
       - api
@@ -85,9 +85,9 @@ services:
       - ./backups:/backups
     environment:
       - POSTGRES_HOST=db
-      - POSTGRES_DB=giftlistdb
-      - POSTGRES_USER=giftlistuser
-      - POSTGRES_PASSWORD=miaPasswordSicura
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - SCHEDULE=@daily
       - BACKUP_KEEP_DAYS=7
     depends_on:
