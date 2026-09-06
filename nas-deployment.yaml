@@ -23,10 +23,12 @@ services:
       - CORS_ORIGIN=https://regalamelo.edoardosarri.com
       - FRONTEND_URL=https://regalamelo.edoardosarri.com
       - JWT_SECRET=DquWtjmyokZOHxXCr6HGYiu/N6k3P+6Z
-      - SMTP_HOST=smtp.gmail.com
-      - SMTP_PORT=587
-      - SMTP_USER=regalamelo.app@gmail.com
-      - SMTP_PASS=vrrmdlevlxhfshlh
+      - SMTP_HOST=smtp.resend.com
+      - SMTP_PORT=465
+      - SMTP_SECURE=true
+      - SMTP_USER=resend
+      - SMTP_PASS=re_btxL4CKn_DdNCCucWMUtYvknTXTCMocH4
+      - EMAIL_FROM=Regalamelo <noreply@regalamelo.edoardosarri.com>
     depends_on:
       - db
     logging:
