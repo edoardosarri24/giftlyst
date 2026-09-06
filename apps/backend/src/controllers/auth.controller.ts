@@ -36,9 +36,10 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
             },
         });
 
-        await sendVerificationEmail(user.email, verificationToken);
+        const lang = req.headers['accept-language']?.startsWith('en') ? 'en' : 'it';
+        await sendVerificationEmail(user.email, verificationToken, lang);
 
-        res.status(201).json({ message: 'Registration successful. Please check your email to verify your account.' });
+        res.status(201).json({});
     } catch (err) {
         next(err);
     }

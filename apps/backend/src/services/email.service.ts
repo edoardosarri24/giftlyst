@@ -7,7 +7,7 @@ export const sendClaimedItemRemovalNotification = async (
     language: string = 'it'
 ): Promise<void> => {
     try {
-        const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
+        const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, EMAIL_FROM } = process.env;
 
         if (!SMTP_HOST || SMTP_HOST === 'localhost' || SMTP_HOST === 'mock') {
             console.log(`[Email Mock] Email skipped for ${guestEmail}. SMTP_HOST is not configured with a real server.`);
@@ -68,7 +68,7 @@ export const sendClaimedItemRemovalNotification = async (
             `;
 
         await transporter.sendMail({
-            from: `"Regalamelo" <${SMTP_USER}>`,
+            from: EMAIL_FROM || '"Regalamelo" <noreply@regalamelo.edoardosarri.com>',
             to: guestEmail,
             subject,
             text,
@@ -87,7 +87,7 @@ export const sendVerificationEmail = async (
     language: string = 'en'
 ): Promise<void> => {
     try {
-        const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, FRONTEND_URL } = process.env;
+        const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, FRONTEND_URL, EMAIL_FROM } = process.env;
         
         // This is safe fallback if FRONTEND_URL is missing
         const baseUrl = FRONTEND_URL || 'http://localhost:5173';
@@ -160,7 +160,7 @@ export const sendVerificationEmail = async (
             `;
 
         await transporter.sendMail({
-            from: `"Regalamelo" <${SMTP_USER}>`,
+            from: EMAIL_FROM || '"Regalamelo" <noreply@regalamelo.edoardosarri.com>',
             to: email,
             subject,
             text,
@@ -179,7 +179,7 @@ export const sendPasswordResetEmail = async (
     language: string = 'en'
 ): Promise<void> => {
     try {
-        const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, FRONTEND_URL } = process.env;
+        const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, FRONTEND_URL, EMAIL_FROM } = process.env;
         
         const baseUrl = FRONTEND_URL || 'http://localhost:5173';
         const resetUrl = `${baseUrl}/auth/reset-password?token=${token}`;
@@ -255,7 +255,7 @@ export const sendPasswordResetEmail = async (
             `;
 
         await transporter.sendMail({
-            from: `"Regalamelo" <${SMTP_USER}>`,
+            from: EMAIL_FROM || '"Regalamelo" <noreply@regalamelo.edoardosarri.com>',
             to: email,
             subject,
             text,

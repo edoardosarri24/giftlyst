@@ -17,6 +17,13 @@ export const setAuthToken = (token: string | null) => {
     }
 };
 
+api.interceptors.request.use((config) => {
+    const lang = localStorage.getItem('appLanguage') || 'en';
+    config.headers['Accept-Language'] = lang;
+    return config;
+});
+
+
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
