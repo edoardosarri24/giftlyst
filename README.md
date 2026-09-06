@@ -5,7 +5,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Detailed technical documentation (LaTeX) is available in the `documentation/` directory, covering backend design, frontend architecture, and deployment strategies.
 
-
 ## Overview
 The **Regalamelo** application allows:
 - **Celebrants**: Create personalized wish lists, add items with descriptions and links, and share a unique link with friends. Claims are hidden from the celebrant to preserve the surprise.

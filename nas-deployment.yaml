@@ -5,6 +5,8 @@ services:
     restart: always
     environment:
       - VITE_API_BASE_URL=https://regalamelo.edoardosarri.com/api/v1
+    depends_on:
+      - api
     logging:
       driver: "json-file"
       options:
@@ -59,7 +61,7 @@ services:
     restart: always
     command: tunnel run
     environment:
-      - TUNNEL_TOKEN=eyJhIjoiNjAxZGFlNDk1ODM0NzUyMjU4NjYwMzMwMWFiZGFlOTMiLCJ0IjoiNTY5YWI0NGYtZjA2My00ZGUzLTg3N2MtNWViZDg0MjlhZGQzIiwicyI6Ill6azRORE00WTJFdFltTmhOQzAwTUdVMkxXSXlORGt0TnpZM09EaGxOR0l6T1RWbCJ9
+      - TUNNEL_TOKEN=eyJhIjoiNjAxZGFlNDk1ODM0NzUyMjU4NjYwMzMwMWFiZGFlOTMiLCJ0IjoiYWFkZjcwOTQtN2Y0OS00YThjLTllZWItYjFjMDYxZTdkY2I5IiwicyI6IllXTXdabUl5TWpJdFltWXhaQzAwWmpNNExXRTJZbVl0WVRsbE4yTTVORFV5Tm1RMCJ9
     depends_on:
       - frontend
       - api
@@ -67,6 +69,8 @@ services:
   watchtower:
     image: containrrr/watchtower
     restart: always
+    environment:
+      - DOCKER_API_VERSION=1.40
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 300 frontend api

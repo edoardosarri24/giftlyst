@@ -4,7 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CreateGiftItemInput, CreateGiftItemSchema, GiftListDTO } from '@regalamelo/shared';
+import { CreateGiftItemInput, CreateGiftItemSchema, GiftListDTO, GiftItemDTO } from '@regalamelo/shared';
 import api from '../../lib/axios';
 import { Card } from '../../components/Card';
 import { Button } from '../../components/Button';
@@ -13,7 +13,7 @@ import { Trash2, Copy, Check, Pencil } from 'lucide-react';
 import { ImageUploader } from './ImageUploader';
 import { useLanguage } from '../../i18n/LanguageContext';
 
-const ManageItemCard = ({ item, slug, onDelete }: { item: any; slug: string; onDelete: () => void }) => {
+const ManageItemCard = ({ item, slug, onDelete }: { item: GiftItemDTO; slug: string; onDelete: () => void }) => {
     const { t } = useLanguage();
     const queryClient = useQueryClient();
     const [isEditing, setIsEditing] = useState(false);
@@ -31,7 +31,7 @@ const ManageItemCard = ({ item, slug, onDelete }: { item: any; slug: string; onD
     });
 
     const updateItemMutation = useMutation({
-        mutationFn: (data: any) => {
+        mutationFn: (data: Partial<CreateGiftItemInput> & { imageUrl?: string }) => {
             const payload = { ...data };
             if (editImage !== undefined) {
                 payload.imageUrl = editImage;
@@ -180,8 +180,8 @@ export const ManageListPage = () => {
         }
     });
 
-    const onSubmitNewItem = handleSubmit((data: any) => {
-        const payload = { ...data };
+    const onSubmitNewItem = handleSubmit((data: CreateGiftItemInput) => {
+        const payload: any = { ...data };
         if (newItemImage) {
             payload.imageUrl = newItemImage;
         }
@@ -330,7 +330,7 @@ export const ManageListPage = () => {
                     </Card>
                 ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                        {list.items.map((item: any) => (
+                        {list.items.map((item: GiftItemDTO) => (
                             <ManageItemCard
                                 key={item.id}
                                 item={item}

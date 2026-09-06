@@ -25,7 +25,7 @@ export const getUserDashboardLists = async (req: Request, res: Response, next: N
             .map(ga => {
                 const list = ga.list;
                 const publicItems = list.items
-                    .map((item: any) => {
+                    .map((item) => {
                         const isClaimedByMe = item.claim?.guestId === ga.id;
                         return {
                             id: item.id,
@@ -37,7 +37,7 @@ export const getUserDashboardLists = async (req: Request, res: Response, next: N
                             isClaimedByMe
                         };
                     })
-                    .filter((item: any) => item.status === 'AVAILABLE' || item.isClaimedByMe);
+                    .filter((item) => item.status === 'AVAILABLE' || item.isClaimedByMe);
 
                 return { id: list.id, name: list.name, customName: ga.customName, slug: list.slug, imageUrl: list.imageUrl, items: publicItems };
             });
@@ -92,7 +92,7 @@ export const getListManage = async (req: Request, res: Response, next: NextFunct
         }
 
         // Surprise Protection: Masking the actual status for the Celebrant
-        const maskedItems = list.items.map((item: any) => ({
+        const maskedItems = list.items.map((item) => ({
             ...item,
             status: 'AVAILABLE',
             claim: undefined
@@ -226,7 +226,7 @@ export const getListPublic = async (req: Request, res: Response, next: NextFunct
         });
 
         const publicItems = list.items
-            .map((item: any) => {
+            .map((item) => {
                 const isClaimedByMe = guestAccess ? item.claim?.guestId === guestAccess.id : false;
                 return {
                     id: item.id,
@@ -239,7 +239,7 @@ export const getListPublic = async (req: Request, res: Response, next: NextFunct
                 };
             })
             // Guest should only see available items or items they claimed themselves
-            .filter((item: any) => item.status === 'AVAILABLE' || item.isClaimedByMe);
+            .filter((item) => item.status === 'AVAILABLE' || item.isClaimedByMe);
 
         res.json({ id: list.id, name: list.name, customName: guestAccess?.customName, slug: list.slug, imageUrl: list.imageUrl, items: publicItems });
     } catch (err) {
