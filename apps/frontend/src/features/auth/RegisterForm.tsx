@@ -13,6 +13,8 @@ export const RegisterForm = ({ onToggle }: { onToggle: () => void }) => {
     const { t } = useLanguage();
     const [serverError, setServerError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
+    const [registeredEmail, setRegisteredEmail] = useState('');
+    const [isResending, setIsResending] = useState(false);
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterUserInput>({
         resolver: zodResolver(RegisterUserSchema)
@@ -23,6 +25,7 @@ export const RegisterForm = ({ onToggle }: { onToggle: () => void }) => {
         setSuccessMessage('');
         try {
             const res = await api.post('/auth/register', data);
+            setRegisteredEmail(data.email);
             setSuccessMessage(res.data.message || t('registrationSuccess'));
         } catch (err: any) {
             if (err.response) {
@@ -46,6 +49,20 @@ export const RegisterForm = ({ onToggle }: { onToggle: () => void }) => {
         }
     };
 
+    const handleResendEmail = async () => {
+        setIsResending(true);
+        setServerError('');
+        setSuccessMessage('');
+        try {
+            await api.post('/auth/resend-verification', { email: registeredEmail });
+            setSuccessMessage(t('verificationEmailResent'));
+        } catch (err: any) {
+            setServerError(err.response?.data?.error?.message || t('serverError'));
+        } finally {
+            setIsResending(false);
+        }
+    };
+
     return (
         <div className={styles.formContainer}>
             <Card>
@@ -54,7 +71,17 @@ export const RegisterForm = ({ onToggle }: { onToggle: () => void }) => {
                 {successMessage ? (
                     <div style={{ textAlign: 'center', padding: '16px' }}>
                         <p style={{ color: 'green', marginBottom: '16px' }}>{successMessage}</p>
-                        <Button onClick={onToggle}>{t('goToLogin')}</Button>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            <Button onClick={onToggle}>{t('goToLogin')}</Button>
+                            <Button 
+                                variant="outline" 
+                                onClick={handleResendEmail} 
+                                isLoading={isResending}
+                                disabled={isResending}
+                            >
+                                {isResending ? t('resending') : t('resendVerificationEmail')}
+                            </Button>
+                        </div>
                     </div>
                 ) : (
                     <>

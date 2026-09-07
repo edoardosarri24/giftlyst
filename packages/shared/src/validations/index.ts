@@ -57,6 +57,10 @@ export const ResetPasswordSchema = z.object({
     password: PasswordSchema,
 });
 
+export const ResendVerificationSchema = z.object({
+    email: z.string().email('Invalid email address'),
+});
+
 // Infer types
 export type RegisterUserInput = z.infer<typeof RegisterUserSchema>;
 export type LoginUserInput = z.infer<typeof LoginUserSchema>;
@@ -69,3 +73,4 @@ export type GuestAccessInput = z.infer<typeof GuestAccessSchema>;
 export type UpdateGuestAccessNameInput = z.infer<typeof UpdateGuestAccessNameSchema>;
 export type ForgotPasswordInput = z.infer<typeof ForgotPasswordSchema>;
 export type ResetPasswordInput = z.infer<typeof ResetPasswordSchema>;
+export type ResendVerificationInput = z.infer<typeof ResendVerificationSchema>;

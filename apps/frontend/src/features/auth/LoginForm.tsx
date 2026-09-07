@@ -16,6 +16,10 @@ export const LoginForm = ({ onToggle }: { onToggle: () => void }) => {
     const { t } = useLanguage();
     const navigate = useNavigate();
     const [serverError, setServerError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+    const [showResend, setShowResend] = useState(false);
+    const [unverifiedEmail, setUnverifiedEmail] = useState('');
+    const [isResending, setIsResending] = useState(false);
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginUserInput>({
         resolver: zodResolver(LoginUserSchema)
@@ -23,6 +27,8 @@ export const LoginForm = ({ onToggle }: { onToggle: () => void }) => {
 
     const onSubmit = async (data: LoginUserInput) => {
         setServerError('');
+        setSuccessMessage('');
+        setShowResend(false);
         try {
             const res = await api.post('/auth/login', data);
             login(res.data.token, res.data.user);
@@ -36,6 +42,8 @@ export const LoginForm = ({ onToggle }: { onToggle: () => void }) => {
                     setServerError(t('invalidCredentials'));
                 } else if (status === 403 && err.response.data?.error?.code === 'AUTH_EMAIL_NOT_VERIFIED') {
                     setServerError(t('emailNotVerified'));
+                    setUnverifiedEmail(data.email);
+                    setShowResend(true);
                 } else if (status >= 400 && status < 500) {
                     setServerError(message || t('invalidData'));
                 } else {
@@ -49,11 +57,42 @@ export const LoginForm = ({ onToggle }: { onToggle: () => void }) => {
         }
     };
 
+    const handleResendEmail = async () => {
+        setIsResending(true);
+        setServerError('');
+        setSuccessMessage('');
+        try {
+            await api.post('/auth/resend-verification', { email: unverifiedEmail });
+            setSuccessMessage(t('verificationEmailResent'));
+            setShowResend(false); // Hide the button after resending
+        } catch (err: any) {
+            setServerError(err.response?.data?.error?.message || t('serverError'));
+        } finally {
+            setIsResending(false);
+        }
+    };
+
     return (
         <div className={styles.formContainer}>
             <Card>
                 <h2 style={{ marginBottom: '24px', textAlign: 'center' }}>{t('welcomeBack')}</h2>
                 {serverError && <div className={styles.serverError}>{serverError}</div>}
+                {successMessage && <div style={{ textAlign: 'center', padding: '16px' }}>
+                    <p style={{ color: 'green', marginBottom: '16px' }}>{successMessage}</p>
+                </div>}
+                {showResend && (
+                    <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+                        <Button 
+                            variant="outline" 
+                            onClick={handleResendEmail} 
+                            isLoading={isResending}
+                            disabled={isResending}
+                            style={{ width: '100%' }}
+                        >
+                            {isResending ? t('resending') : t('resendVerificationEmail')}
+                        </Button>
+                    </div>
+                )}
 
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Input

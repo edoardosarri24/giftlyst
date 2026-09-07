@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import prisma from '../utils/prisma';
-import { RegisterUserInput, LoginUserInput, ForgotPasswordInput, ResetPasswordInput, ErrorCodes } from '@regalamelo/shared';
+import { RegisterUserInput, LoginUserInput, ForgotPasswordInput, ResetPasswordInput, ErrorCodes, ResendVerificationInput } from '@regalamelo/shared';
 import crypto from 'crypto';
 import { sendVerificationEmail, sendPasswordResetEmail } from '../services/email.service';
 
@@ -81,6 +81,37 @@ export const verifyEmail = async (req: Request, res: Response, next: NextFunctio
         });
 
         res.json({ token: accessToken, user: { id: userUpdated.id, email: userUpdated.email } });
+    } catch (err) {
+        next(err);
+    }
+};
+
+export const resendVerification = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { email } = req.body as ResendVerificationInput;
+        const lang = req.headers['accept-language']?.startsWith('en') ? 'en' : 'it';
+
+        const user = await prisma.user.findUnique({ where: { email } });
+        if (!user || user.isVerified) {
+            // For security, don't reveal if email exists or is already verified.
+            res.json({ message: 'If the email exists and is not verified, a new verification link has been sent.' });
+            return;
+        }
+
+        const verificationToken = crypto.randomBytes(32).toString('hex');
+        const verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
+        await prisma.user.update({
+            where: { id: user.id },
+            data: {
+                verificationToken,
+                verificationTokenExpires,
+            },
+        });
+
+        await sendVerificationEmail(user.email, verificationToken, lang);
+
+        res.json({ message: 'If the email exists and is not verified, a new verification link has been sent.' });
     } catch (err) {
         next(err);
     }

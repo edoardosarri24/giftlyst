@@ -108,7 +108,10 @@ const translations = {
         newPasswordLabel: 'Nuova Password',
         resetPasswordButton: 'Reimposta Password',
         resetPasswordSuccess: 'Password reimpostata con successo! Ora puoi accedere con la nuova password.',
-        passwordResetting: 'Reimpostazione in corso...'
+        passwordResetting: 'Reimpostazione in corso...',
+        resendVerificationEmail: 'Invia nuovamente l\'email di attivazione',
+        verificationEmailResent: 'Email inviata con successo. Controlla la tua casella di posta.',
+        resending: 'Invio in corso...'
     },
     en: {
         dashboardTitle: 'My Gift Lists',
@@ -215,7 +218,10 @@ const translations = {
         newPasswordLabel: 'New Password',
         resetPasswordButton: 'Reset Password',
         resetPasswordSuccess: 'Password reset successful! You can now log in with your new password.',
-        passwordResetting: 'Resetting password...'
+        passwordResetting: 'Resetting password...',
+        resendVerificationEmail: 'Resend verification email',
+        verificationEmailResent: 'Email successfully sent. Please check your inbox.',
+        resending: 'Resending...'
     }
 };
 
