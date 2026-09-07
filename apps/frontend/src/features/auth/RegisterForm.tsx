@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RegisterUserInput, RegisterUserSchema } from '@regalamelo/shared';
@@ -15,10 +15,18 @@ export const RegisterForm = ({ onToggle }: { onToggle: () => void }) => {
     const [successMessage, setSuccessMessage] = useState('');
     const [registeredEmail, setRegisteredEmail] = useState('');
     const [isResending, setIsResending] = useState(false);
+    const [resendCooldown, setResendCooldown] = useState(0);
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<RegisterUserInput>({
         resolver: zodResolver(RegisterUserSchema)
     });
+
+    useEffect(() => {
+        if (resendCooldown > 0) {
+            const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [resendCooldown]);
 
     const onSubmit = async (data: RegisterUserInput) => {
         setServerError('');
@@ -56,6 +64,7 @@ export const RegisterForm = ({ onToggle }: { onToggle: () => void }) => {
         try {
             await api.post('/auth/resend-verification', { email: registeredEmail });
             setSuccessMessage(t('verificationEmailResent'));
+            setResendCooldown(30);
         } catch (err: any) {
             setServerError(err.response?.data?.error?.message || t('serverError'));
         } finally {
@@ -77,9 +86,11 @@ export const RegisterForm = ({ onToggle }: { onToggle: () => void }) => {
                                 variant="outline" 
                                 onClick={handleResendEmail} 
                                 isLoading={isResending}
-                                disabled={isResending}
+                                disabled={isResending || resendCooldown > 0}
+                                style={{ opacity: resendCooldown > 0 ? 0.6 : 1 }}
                             >
                                 {isResending ? t('resending') : t('resendVerificationEmail')}
+                                {resendCooldown > 0 && ` (${resendCooldown})`}
                             </Button>
                         </div>
                     </div>

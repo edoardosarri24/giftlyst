@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginUserInput, LoginUserSchema } from '@regalamelo/shared';
@@ -20,10 +20,18 @@ export const LoginForm = ({ onToggle }: { onToggle: () => void }) => {
     const [showResend, setShowResend] = useState(false);
     const [unverifiedEmail, setUnverifiedEmail] = useState('');
     const [isResending, setIsResending] = useState(false);
+    const [resendCooldown, setResendCooldown] = useState(0);
 
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginUserInput>({
         resolver: zodResolver(LoginUserSchema)
     });
+
+    useEffect(() => {
+        if (resendCooldown > 0) {
+            const timer = setTimeout(() => setResendCooldown(resendCooldown - 1), 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [resendCooldown]);
 
     const onSubmit = async (data: LoginUserInput) => {
         setServerError('');
@@ -64,7 +72,7 @@ export const LoginForm = ({ onToggle }: { onToggle: () => void }) => {
         try {
             await api.post('/auth/resend-verification', { email: unverifiedEmail });
             setSuccessMessage(t('verificationEmailResent'));
-            setShowResend(false); // Hide the button after resending
+            setResendCooldown(30);
         } catch (err: any) {
             setServerError(err.response?.data?.error?.message || t('serverError'));
         } finally {
@@ -86,10 +94,11 @@ export const LoginForm = ({ onToggle }: { onToggle: () => void }) => {
                             variant="outline" 
                             onClick={handleResendEmail} 
                             isLoading={isResending}
-                            disabled={isResending}
-                            style={{ width: '100%' }}
+                            disabled={isResending || resendCooldown > 0}
+                            style={{ width: '100%', opacity: resendCooldown > 0 ? 0.6 : 1 }}
                         >
                             {isResending ? t('resending') : t('resendVerificationEmail')}
+                            {resendCooldown > 0 && ` (${resendCooldown})`}
                         </Button>
                     </div>
                 )}
