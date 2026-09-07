@@ -96,16 +96,20 @@ export const LoginForm = ({ onToggle }: { onToggle: () => void }) => {
 
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Input
+                        id="email"
                         label={t('emailLabel')}
                         type="email"
                         placeholder="festeggiato@esempio.com"
+                        autoComplete="username"
                         {...register('email')}
                         error={errors.email?.message}
                     />
                     <Input
+                        id="password"
                         label={t('passwordLabel')}
                         type="password"
                         placeholder="••••••••"
+                        autoComplete="current-password"
                         {...register('password')}
                         error={errors.password?.message}
                     />

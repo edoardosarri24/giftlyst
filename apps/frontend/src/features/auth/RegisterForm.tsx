@@ -87,16 +87,20 @@ export const RegisterForm = ({ onToggle }: { onToggle: () => void }) => {
                     <>
                         <form onSubmit={handleSubmit(onSubmit)}>
                     <Input
+                        id="register-email"
                         label={t('emailLabel')}
                         type="email"
                         placeholder="festeggiato@esempio.com"
+                        autoComplete="username"
                         {...register('email')}
                         error={errors.email?.message}
                     />
                     <Input
+                        id="register-password"
                         label={t('passwordLabel')}
                         type="password"
                         placeholder="••••••••"
+                        autoComplete="new-password"
                         {...register('password')}
                         error={errors.password?.message}
                     />

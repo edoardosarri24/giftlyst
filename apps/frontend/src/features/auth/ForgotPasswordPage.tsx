@@ -66,9 +66,11 @@ export const ForgotPasswordPage = () => {
 
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <Input
+                                    id="forgot-password-email"
                                     label={t('emailLabel')}
                                     type="email"
                                     placeholder="festeggiato@esempio.com"
+                                    autoComplete="username"
                                     {...register('email')}
                                     error={errors.email?.message}
                                 />

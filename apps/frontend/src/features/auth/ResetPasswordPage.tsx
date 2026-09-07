@@ -87,9 +87,11 @@ export const ResetPasswordPage = () => {
 
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 <Input
+                                    id="new-password"
                                     label={t('newPasswordLabel')}
                                     type="password"
                                     placeholder="••••••••"
+                                    autoComplete="new-password"
                                     {...register('password')}
                                     error={errors.password?.message}
                                 />
