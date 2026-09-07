@@ -73,9 +73,9 @@ export const LandingPage = () => {
             <p className={styles.subtitle}>{t('landingSubtitle')}</p>
 
             {isLogin ? (
-                <LoginForm onToggle={() => setIsLogin(false)} />
+                <LoginForm key="login" onToggle={() => setIsLogin(false)} />
             ) : (
-                <RegisterForm onToggle={() => setIsLogin(true)} />
+                <RegisterForm key="register" onToggle={() => setIsLogin(true)} />
             )}
         </div>
     );

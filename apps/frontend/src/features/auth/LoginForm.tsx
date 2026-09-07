@@ -94,23 +94,23 @@ export const LoginForm = ({ onToggle }: { onToggle: () => void }) => {
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form action="#" onSubmit={handleSubmit(onSubmit)} autoComplete="on">
                     <Input
-                        id="email"
+                        id="login-email"
                         label={t('emailLabel')}
                         type="email"
                         placeholder="festeggiato@esempio.com"
-                        autoComplete="username"
                         {...register('email')}
+                        autoComplete="username"
                         error={errors.email?.message}
                     />
                     <Input
-                        id="password"
+                        id="login-password"
                         label={t('passwordLabel')}
                         type="password"
                         placeholder="••••••••"
-                        autoComplete="current-password"
                         {...register('password')}
+                        autoComplete="current-password"
                         error={errors.password?.message}
                     />
 
