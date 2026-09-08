@@ -78,9 +78,9 @@ const ManageItemCard = ({ item, slug, onDelete }: { item: GiftItemDTO; slug: str
                             )}
                         </div>
 
-                        <Input label={t('nameLabel')} placeholder="es. Nintendo Switch" {...register('name')} error={errors.name?.message} />
-                        <Input label={t('descriptionLabel')} placeholder="Dettagli specifici" {...register('description')} error={errors.description?.message} />
-                        <Input label={t('urlLabel')} placeholder="https://..." {...register('url')} error={errors.url?.message} />
+                        <Input label={t('nameLabel')} placeholder="es. Nintendo Switch" {...register('name')} error={errors.name?.message ? t(errors.name.message as any) : undefined} />
+                        <Input label={t('descriptionLabel')} placeholder="Dettagli specifici" {...register('description')} error={errors.description?.message ? t(errors.description.message as any) : undefined} />
+                        <Input label={t('urlLabel')} placeholder="https://..." {...register('url')} error={errors.url?.message ? t(errors.url.message as any) : undefined} />
 
                         <div style={{ marginBottom: '16px' }}>
                             <label style={{ display: 'block', fontSize: '14px', marginBottom: '4px', fontWeight: 500 }}>{t('preferenceLabel')}</label>
@@ -302,9 +302,9 @@ export const ManageListPage = () => {
                                 )}
                             </div>
 
-                            <Input label={t('nameLabel')} placeholder="es. Nintendo Switch" {...register('name')} error={errors.name?.message} />
-                            <Input label={t('descriptionLabel')} placeholder="Dettagli specifici" {...register('description')} error={errors.description?.message} />
-                            <Input label={t('urlLabel')} placeholder="https://..." {...register('url')} error={errors.url?.message} />
+                            <Input label={t('nameLabel')} placeholder="es. Nintendo Switch" {...register('name')} error={errors.name?.message ? t(errors.name.message as any) : undefined} />
+                            <Input label={t('descriptionLabel')} placeholder="Dettagli specifici" {...register('description')} error={errors.description?.message ? t(errors.description.message as any) : undefined} />
+                            <Input label={t('urlLabel')} placeholder="https://..." {...register('url')} error={errors.url?.message ? t(errors.url.message as any) : undefined} />
 
                             <div style={{ marginBottom: '16px' }}>
                                 <label style={{ display: 'block', fontSize: '14px', marginBottom: '4px', fontWeight: 500 }}>{t('preferenceLabel')}</label>

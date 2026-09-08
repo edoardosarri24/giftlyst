@@ -2,38 +2,38 @@ import { z } from 'zod';
 
 export const PasswordSchema = z
     .string()
-    .min(8, 'Password must be at least 8 characters long')
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[^a-zA-Z0-9]|[0-9]/, 'Password must contain at least one number or special character');
+    .min(8, 'val_password_min')
+    .regex(/[A-Z]/, 'val_password_uppercase')
+    .regex(/[^a-zA-Z0-9]|[0-9]/, 'val_password_number_special');
 
 export const RegisterUserSchema = z.object({
-    email: z.string().email('Invalid email address'),
+    email: z.string().email('val_email_invalid'),
     password: PasswordSchema,
 });
 
 export const LoginUserSchema = z.object({
-    email: z.string().email('Invalid email address'),
-    password: z.string().min(1, 'Password is required'),
+    email: z.string().email('val_email_invalid'),
+    password: z.string().min(1, 'val_password_required'),
 });
 
 export const VerifyEmailSchema = z.object({
-    token: z.string().min(1, 'Token is required'),
+    token: z.string().min(1, 'val_token_required'),
 });
 
 export const CreateGiftListSchema = z.object({
-    name: z.string().min(3, 'Name must be at least 3 characters').max(50, 'Name cannot exceed 50 characters'),
+    name: z.string().min(3, 'val_name_min').max(50, 'val_name_max'),
     imageUrl: z.string().optional().nullable().or(z.literal('')),
 });
 
 export const UpdateGiftListSchema = z.object({
-    name: z.string().min(3, 'Name must be at least 3 characters').max(50, 'Name cannot exceed 50 characters').optional(),
+    name: z.string().min(3, 'val_name_min').max(50, 'val_name_max').optional(),
     imageUrl: z.string().optional().nullable().or(z.literal('')),
 });
 
 export const CreateGiftItemSchema = z.object({
-    name: z.string().min(3, 'Name must be at least 3 characters').max(50, 'Name cannot exceed 50 characters'),
-    description: z.string().max(200, 'Description cannot exceed 200 characters').optional().nullable(),
-    url: z.string().url('Must be a valid URL').optional().nullable().or(z.literal('')),
+    name: z.string().min(3, 'val_name_min').max(50, 'val_name_max'),
+    description: z.string().max(200, 'val_desc_max').optional().nullable(),
+    url: z.string().url('val_url_invalid').optional().nullable().or(z.literal('')),
     imageUrl: z.string().optional().nullable().or(z.literal('')),
     preference: z.enum(['LOW', 'MEDIUM', 'HIGH']).default('MEDIUM'),
 });
@@ -45,20 +45,20 @@ export const GuestAccessSchema = z.object({
 });
 
 export const UpdateGuestAccessNameSchema = z.object({
-    customName: z.string().min(1, 'Name must be at least 1 character').max(50, 'Name cannot exceed 50 characters'),
+    customName: z.string().min(1, 'val_name_min_1').max(50, 'val_name_max'),
 });
 
 export const ForgotPasswordSchema = z.object({
-    email: z.string().email('Invalid email address'),
+    email: z.string().email('val_email_invalid'),
 });
 
 export const ResetPasswordSchema = z.object({
-    token: z.string().min(1, 'Token is required'),
+    token: z.string().min(1, 'val_token_required'),
     password: PasswordSchema,
 });
 
 export const ResendVerificationSchema = z.object({
-    email: z.string().email('Invalid email address'),
+    email: z.string().email('val_email_invalid'),
 });
 
 // Infer types

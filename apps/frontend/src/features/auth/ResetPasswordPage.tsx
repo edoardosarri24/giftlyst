@@ -93,7 +93,7 @@ export const ResetPasswordPage = () => {
                                     placeholder="••••••••"
                                     autoComplete="new-password"
                                     {...register('password')}
-                                    error={errors.password?.message}
+                                    error={errors.password?.message ? t(errors.password.message as any) : undefined}
                                 />
 
                                 <Button type="submit" isLoading={isSubmitting} style={{ width: '100%', marginTop: '16px' }}>

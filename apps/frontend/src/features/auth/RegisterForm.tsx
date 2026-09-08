@@ -44,7 +44,7 @@ export const RegisterForm = ({ onToggle }: { onToggle: () => void }) => {
                 if (status === 409) {
                     setServerError(t('emailAlreadyRegistered'));
                 } else if (status >= 400 && status < 500) {
-                    setServerError(message || t('invalidData'));
+                    setServerError(message ? t(message as any) : t('invalidData'));
                 } else {
                     setServerError(t('serverError'));
                 }
@@ -66,7 +66,7 @@ export const RegisterForm = ({ onToggle }: { onToggle: () => void }) => {
             setSuccessMessage(t('verificationEmailResent'));
             setResendCooldown(30);
         } catch (err: any) {
-            setServerError(err.response?.data?.error?.message || t('serverError'));
+            setServerError(err.response?.data?.error?.message ? t(err.response.data.error.message as any) : t('serverError'));
         } finally {
             setIsResending(false);
         }
@@ -104,7 +104,7 @@ export const RegisterForm = ({ onToggle }: { onToggle: () => void }) => {
                         placeholder="festeggiato@esempio.com"
                         {...register('email')}
                         autoComplete="username"
-                        error={errors.email?.message}
+                        error={errors.email?.message ? t(errors.email.message as any) : undefined}
                     />
                     <Input
                         id="register-password"
@@ -113,7 +113,7 @@ export const RegisterForm = ({ onToggle }: { onToggle: () => void }) => {
                         placeholder="••••••••"
                         {...register('password')}
                         autoComplete="new-password"
-                        error={errors.password?.message}
+                        error={errors.password?.message ? t(errors.password.message as any) : undefined}
                     />
 
                     <Button type="submit" isLoading={isSubmitting} style={{ width: '100%' }}>

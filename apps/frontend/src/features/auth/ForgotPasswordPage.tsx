@@ -34,7 +34,7 @@ export const ForgotPasswordPage = () => {
         } catch (err: any) {
             if (err.response) {
                 const message = err.response.data?.error?.message;
-                setServerError(message || t('unexpectedError'));
+                setServerError(message ? t(message as any) : t('unexpectedError'));
             } else {
                 setServerError(t('connectionError'));
             }
@@ -72,7 +72,7 @@ export const ForgotPasswordPage = () => {
                                     placeholder="festeggiato@esempio.com"
                                     autoComplete="username"
                                     {...register('email')}
-                                    error={errors.email?.message}
+                                    error={errors.email?.message ? t(errors.email.message as any) : undefined}
                                 />
 
                                 <Button type="submit" isLoading={isSubmitting} style={{ width: '100%', marginTop: '8px' }}>

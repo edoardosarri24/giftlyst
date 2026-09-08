@@ -89,7 +89,7 @@ export const CreateListForm = () => {
                             label={t('listNameLabel')}
                             placeholder="es. Il mio fantastico compleanno"
                             {...register('name')}
-                            error={errors.name?.message}
+                            error={errors.name?.message ? t(errors.name.message as any) : undefined}
                         />
                         <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'flex-end' }}>
                             <Button type="submit" isLoading={isSubmitting}>

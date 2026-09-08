@@ -111,7 +111,18 @@ const translations = {
         passwordResetting: 'Reimpostazione in corso...',
         resendVerificationEmail: 'Invia nuovamente l\'email di attivazione',
         verificationEmailResent: 'Email inviata con successo. Controlla la tua casella di posta.',
-        resending: 'Invio in corso...'
+        resending: 'Invio in corso...',
+        val_password_min: 'La password deve essere di almeno 8 caratteri',
+        val_password_uppercase: 'La password deve contenere almeno una lettera maiuscola',
+        val_password_number_special: 'La password deve contenere almeno un numero o carattere speciale',
+        val_email_invalid: 'Indirizzo email non valido',
+        val_password_required: 'La password è obbligatoria',
+        val_token_required: 'Il token è obbligatorio',
+        val_name_min: 'Il nome deve essere di almeno 3 caratteri',
+        val_name_max: 'Il nome non può superare i 50 caratteri',
+        val_desc_max: 'La descrizione non può superare i 200 caratteri',
+        val_url_invalid: 'Deve essere un URL valido',
+        val_name_min_1: 'Il nome deve essere di almeno 1 carattere'
     },
     en: {
         dashboardTitle: 'My Gift Lists',
@@ -221,7 +232,18 @@ const translations = {
         passwordResetting: 'Resetting password...',
         resendVerificationEmail: 'Resend verification email',
         verificationEmailResent: 'Email successfully sent. Please check your inbox.',
-        resending: 'Resending...'
+        resending: 'Resending...',
+        val_password_min: 'Password must be at least 8 characters long',
+        val_password_uppercase: 'Password must contain at least one uppercase letter',
+        val_password_number_special: 'Password must contain at least one number or special character',
+        val_email_invalid: 'Invalid email address',
+        val_password_required: 'Password is required',
+        val_token_required: 'Token is required',
+        val_name_min: 'Name must be at least 3 characters',
+        val_name_max: 'Name cannot exceed 50 characters',
+        val_desc_max: 'Description cannot exceed 200 characters',
+        val_url_invalid: 'Must be a valid URL',
+        val_name_min_1: 'Name must be at least 1 character'
     }
 };
 

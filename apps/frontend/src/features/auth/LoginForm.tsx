@@ -53,7 +53,7 @@ export const LoginForm = ({ onToggle }: { onToggle: () => void }) => {
                     setUnverifiedEmail(data.email);
                     setShowResend(true);
                 } else if (status >= 400 && status < 500) {
-                    setServerError(message || t('invalidData'));
+                    setServerError(message ? t(message as any) : t('invalidData'));
                 } else {
                     setServerError(t('serverError'));
                 }
@@ -74,7 +74,7 @@ export const LoginForm = ({ onToggle }: { onToggle: () => void }) => {
             setSuccessMessage(t('verificationEmailResent'));
             setResendCooldown(30);
         } catch (err: any) {
-            setServerError(err.response?.data?.error?.message || t('serverError'));
+            setServerError(err.response?.data?.error?.message ? t(err.response.data.error.message as any) : t('serverError'));
         } finally {
             setIsResending(false);
         }
@@ -111,7 +111,7 @@ export const LoginForm = ({ onToggle }: { onToggle: () => void }) => {
                         placeholder="festeggiato@esempio.com"
                         {...register('email')}
                         autoComplete="username"
-                        error={errors.email?.message}
+                        error={errors.email?.message ? t(errors.email.message as any) : undefined}
                     />
                     <Input
                         id="login-password"
@@ -120,7 +120,7 @@ export const LoginForm = ({ onToggle }: { onToggle: () => void }) => {
                         placeholder="••••••••"
                         {...register('password')}
                         autoComplete="current-password"
-                        error={errors.password?.message}
+                        error={errors.password?.message ? t(errors.password.message as any) : undefined}
                     />
 
                     <div style={{ textAlign: 'right', marginBottom: '24px', marginTop: '-8px' }}>

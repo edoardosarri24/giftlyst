@@ -50,7 +50,7 @@ export const GuestAccessPage = () => {
                             type="email"
                             placeholder="ospite@esempio.com"
                             {...register('email')}
-                            error={errors.email?.message}
+                            error={errors.email?.message ? t(errors.email.message as any) : undefined}
                         />
                         <Input
                             type="hidden"
