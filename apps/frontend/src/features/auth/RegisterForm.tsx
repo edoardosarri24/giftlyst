@@ -35,6 +35,7 @@ export const RegisterForm = ({ onToggle }: { onToggle: () => void }) => {
             const res = await api.post('/auth/register', data);
             setRegisteredEmail(data.email);
             setSuccessMessage(res.data.message || t('registrationSuccess'));
+            setResendCooldown(30);
         } catch (err: any) {
             if (err.response) {
                 // The server responded with a status code outside the 2xx range
